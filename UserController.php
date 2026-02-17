@@ -25,10 +25,6 @@ class UserController extends Controller
     public function __construct()
     {
         $this->middleware(['auth:api', 'jwt.security']);
-        $this->middleware('permission:lister users', ['only' => ['index', 'get_profile', 'logout']]);
-        $this->middleware('permission:creer users', ['only' => ['register',]]);
-        $this->middleware('permission:editer users', ['only' => ['update_credentials','update_password',]]);
-        $this->middleware('permission:supprimer users', ['only' => ['destroy',]]);
     }
 
     #[OA\Get(
@@ -67,53 +63,7 @@ class UserController extends Controller
 
 
 
-    #[OA\Get(
-        path: '/api/profile',
-        tags: ['User'],
-        summary: "Afficher le profil de l'utilisateur",
-        security: [['bearerAuth' => []]],
-        parameters: [
-            new OA\Parameter(
-                name: 'uuid',
-                in: 'path',
-                required: true,
-                schema: new OA\Schema(type: 'string')
-            )
-        ],
-        responses: [
-            new OA\Response(response: 200, description: 'Utilisateur authentifié',
-                content: new OA\JsonContent(
-                   properties: [
-                            new OA\Property(property: 'id', type: 'integer', example: 1),
-                            new OA\Property(property: 'type', type: 'string', example: 'Personne/Entreprise'),
-                            new OA\Property(property: 'name', type: 'string', example: 'John Doe'),
-                            new OA\Property(property: 'email', type: 'string', example: 'john@example.com'),
-                            new OA\Property(property: 'phone', type: 'string', nullable: true),
-                            new OA\Property(property: 'address', type: 'string', nullable: true),
-                            new OA\Property(property: 'is_active', type: 'boolean', example: true),
-                            new OA\Property(property: 'uuid', type: 'string', example: 'eecdbbe1-81e5-4b66-a5a4-b30e4d080e7a'),
-                            new OA\Property(property: 'created_at', type: 'datetime'),
-                            new OA\Property(property: 'updated_at', type: 'datetime'),
-                            new OA\Property(property: 'roles', type: 'array', items: new OA\Items(
-                                ref: '#/components/schemas/Role'
-                            )),
-                            new OA\Property(property: 'garanties', type: 'array', items: new OA\Items(
-                                ref: '#/components/schemas/Garantie'
-                            )),
-                            new OA\Property(property: 'main_levees', type: 'array', items: new OA\Items(
-                                ref: '#/components/schemas/MainLevee'
-                            )),
-                            new OA\Property(property: 'documents', type: 'array', items: new OA\Items(
-                                ref: '#/components/schemas/Document')
-                            ),
-                        ]
-                )
-            ),
-            new OA\Response(response: 401, description: 'Non authentifié'),
-            new OA\Response(response: 404, description: 'User non trouvé')
-        ]
-    )]
-
+   
     public function get_profile()
     {
         $user = Auth::guard('api')->user();
