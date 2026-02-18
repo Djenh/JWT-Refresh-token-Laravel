@@ -389,7 +389,60 @@ Now test the command by running
     php artisan tokens:clean --days=14
 ```
 
-### **Step 7 : Launch the app**
+### **Step 7 : Verify CORS configs**
+
+Publish CORS configurations by running the command
+
+```console
+    php artisan config:publish cors
+```
+
+Or the command 
+```console
+    php artisan vendor:publish --tag=cors
+```
+
+Then you'll have a new file created `config/cors.php`
+Open it and set right parameters you like or leave default parameters.
+
+Here is an example of parameters you can set
+
+```php
+    return [
+        'paths' => ['api/*', 'sanctum/csrf-cookie'],
+
+        'allowed_methods' => ['*'],
+
+        'allowed_origins' => [
+            'http://localhost:3000',  // Frontend local
+            'http://localhost:8080',  // Frontend local
+            'https://my-domaine.com', // Production
+        ],
+
+        'allowed_origins_patterns' => [],
+
+        'allowed_headers' => [
+            'Content-Type',
+            'X-Requested-With',
+            'Authorization',
+            'Accept',
+            'Origin',
+        ],
+
+        'exposed_headers' => [
+            'Authorization',
+        ],
+
+        'max_age' => 86400, // 24 hours
+
+        'supports_credentials' => true,
+    ];
+
+```
+
+
+
+### **Step 8 : Launch the app**
 
 Now clean everything and launch the app
 
