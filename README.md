@@ -441,6 +441,17 @@ Here is an example of parameters you can set
 ```
 
 
+Open the file `bootstrap/app.php` and check if CORS is activated
+
+```php
+    ->withMiddleware(function (Middleware $middleware) {
+        $middleware->api(prepend: [
+            \Illuminate\Http\Middleware\HandleCors::class,
+        ]);
+    })
+```
+
+
 
 ### **Step 8 : Launch the app**
 
